@@ -13,6 +13,8 @@ public class DataMessage implements Serializable {
      */
     private String type;
 
+    private Long seqId;
+
     private Object data;
 
     public String getType() {
@@ -29,5 +31,13 @@ public class DataMessage implements Serializable {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    public Long getSeqId() {
+        return seqId;
+    }
+
+    public void setSeqId(Long seqId) {
+        this.seqId = seqId;
     }
 }

@@ -38,6 +38,7 @@ public class SimpleClient {
                     @Override
                     protected void initChannel(SocketChannel sh) {
                         ChannelPipeline p = sh.pipeline();
+                        p.addLast(new SimpleMessagerEncoder());
                         p.addLast(new SimpleClientHandler());
                     }
                 });
