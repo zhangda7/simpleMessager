@@ -1,6 +1,7 @@
 package com.comm.server;
 
 import com.comm.CodecUtil;
+import com.comm.model.TransData;
 import com.google.gson.Gson;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelDuplexHandler;
@@ -18,23 +19,32 @@ public class SimpleServerHandler extends ByteToMessageDecoder {
 
     private static Gson gson = new Gson();
 
+    private static final int CRC_LENGTH = 4;
+
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
         logger.info("Readable bytes {}", byteBuf.readableBytes());
-        if(byteBuf.readableBytes() < 5) {
+        if(byteBuf.readableBytes() < 16) {
             return;
         }
         byteBuf.markReaderIndex();
-        int bodyLen = byteBuf.readInt();
-        if(byteBuf.readableBytes() < bodyLen) {
+        short preamble = byteBuf.readShort();
+
+        int msgLen = byteBuf.readInt();
+        if(byteBuf.readableBytes() < msgLen + CRC_LENGTH) {
             byteBuf.resetReaderIndex();
             return;
         }
-        logger.info("Bodylen:{}", bodyLen);
-        byte[] bytes = new byte[bodyLen];
+        logger.info("MsgLen:{}", msgLen);
+        byte[] bytes = new byte[msgLen + CRC_LENGTH];
+        byteBuf.resetReaderIndex();
         byteBuf.readBytes(bytes);
-        Object object = CodecUtil.decodeData(bytes);
+        TransData transData = new TransData();
+        transData.decode(bytes);
+
+        Object object = CodecUtil.decodeData(transData.getData());
 
         logger.info("Receive obj {}", gson.toJson(object));
+//        list.add(object);
     }
 
     @Override
