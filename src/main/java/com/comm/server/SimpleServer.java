@@ -1,5 +1,7 @@
 package com.comm.server;
 
+import com.comm.codec.SimpleMessagerDecoder;
+import com.comm.codec.SimpleMessagerEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -27,6 +29,7 @@ public class SimpleServer {
                         @Override
                         protected void initChannel(SocketChannel sh) {
                             ChannelPipeline p = sh.pipeline();
+                            p.addLast(new SimpleMessagerEncoder());
                             p.addLast(new SimpleMessagerDecoder());
                             p.addLast(new SimpleServerHandler());
                         }

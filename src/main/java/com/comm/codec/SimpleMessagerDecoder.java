@@ -1,7 +1,8 @@
-package com.comm.server;
+package com.comm.codec;
 
 import com.comm.CodecUtil;
 import com.comm.model.DataMessage;
+import com.comm.model.MsgType;
 import com.comm.model.TransData;
 import com.google.gson.Gson;
 import io.netty.buffer.ByteBuf;
@@ -47,6 +48,19 @@ public class SimpleMessagerDecoder extends ByteToMessageDecoder {
 
 //        logger.info("Receive obj {}", gson.toJson(object));
         list.add(object);
+
+        this.responseAck(channelHandlerContext, transData);
+    }
+
+    private void responseAck(ChannelHandlerContext ctx, TransData oriData) {
+        if(oriData.getMsgType() == MsgType.ACK.getType()) {
+            return;
+        }
+        DataMessage dataMessage = new DataMessage();
+        dataMessage.setSeqId(oriData.getSeqId());
+        dataMessage.setType(MsgType.ACK.name());
+
+        ctx.channel().writeAndFlush(dataMessage);
     }
 
     @Override

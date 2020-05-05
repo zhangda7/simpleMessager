@@ -10,6 +10,7 @@ public class DataMessage implements Serializable {
 
     /**
      * msg type, such as text, image, video...
+     * refer to @see com.comm.model.MsgType
      */
     private String type;
 

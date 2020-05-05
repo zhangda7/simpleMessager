@@ -1,4 +1,4 @@
-package com.comm.client;
+package com.comm.codec;
 
 import com.comm.CodecUtil;
 import com.comm.model.DataMessage;
@@ -48,7 +48,6 @@ public class SimpleMessagerEncoder extends MessageToByteEncoder<Object> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
         logger.error("ERROR ", cause);
         ctx.fireExceptionCaught(cause);
     }

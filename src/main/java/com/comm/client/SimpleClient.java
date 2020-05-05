@@ -1,5 +1,7 @@
 package com.comm.client;
 
+import com.comm.codec.SimpleMessagerDecoder;
+import com.comm.codec.SimpleMessagerEncoder;
 import com.comm.model.DataMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -39,6 +41,7 @@ public class SimpleClient {
                     protected void initChannel(SocketChannel sh) {
                         ChannelPipeline p = sh.pipeline();
                         p.addLast(new SimpleMessagerEncoder());
+                        p.addLast(new SimpleMessagerDecoder());
                         p.addLast(new SimpleClientHandler());
                     }
                 });
@@ -52,14 +55,18 @@ public class SimpleClient {
         }
     }
 
-    private void sendMsg() throws InterruptedException {
+    private void sendMsg(DataMessage dataMessage) {
+        this.channel.writeAndFlush(dataMessage);
+    }
+
+    private void mockSendMsg() throws InterruptedException {
         logger.info("Begin send data");
         for (int i = 0; i < 10; i++) {
             DataMessage dataMessage = new DataMessage();
             dataMessage.setType("TEXT");
             dataMessage.setData("data" + i);
             logger.info("Send data {}", i);
-            channel.writeAndFlush(dataMessage);
+            this.sendMsg(dataMessage);
             Thread.sleep(1000);
         }
     }
@@ -67,7 +74,7 @@ public class SimpleClient {
     public static void main(String[] args) throws InterruptedException {
         SimpleClient simpleClient = new SimpleClient("localhost", 8081);
         simpleClient.start();
-        simpleClient.sendMsg();
+        simpleClient.mockSendMsg();
     }
 
 }
