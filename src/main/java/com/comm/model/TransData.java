@@ -55,8 +55,8 @@ public class TransData {
         byteBuffer.putInt(this.msgLen);
         byteBuffer.putShort(this.headerLen);
         byteBuffer.put(this.version);
+        byteBuffer.putShort(this.msgType);
         byteBuffer.putLong(this.seqId);
-        byteBuffer.put(this.msgType);
 
         byteBuffer.put(this.data);
         byteBuffer.putInt(this.crc);
@@ -70,8 +70,8 @@ public class TransData {
         this.msgLen = byteBuf.readInt();
         this.headerLen = byteBuf.readShort();
         this.version = byteBuf.readByte();
+        this.msgType = byteBuf.readShort();
         this.seqId = byteBuf.readLong();
-        this.msgType = byteBuf.readByte();
         this.data = new byte[this.msgLen - this.headerLen];
         byteBuf.readBytes(this.data);
         this.crc = byteBuf.readInt();
