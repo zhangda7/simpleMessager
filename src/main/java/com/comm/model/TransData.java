@@ -24,13 +24,6 @@ public class TransData {
      */
     private byte version = 1;
 
-
-
-    /**
-     * message seq id
-     */
-    private long seqId;
-
     /**
      * msg type:
      * 0:ACK
@@ -39,7 +32,12 @@ public class TransData {
      * 3:VIDEO
      * 4:
      */
-    private byte msgType;
+    private short msgType;
+
+    /**
+     * message seq id
+     */
+    private long seqId;
 
     /**
      * real data
@@ -123,14 +121,6 @@ public class TransData {
         this.seqId = seqId;
     }
 
-    public byte getMsgType() {
-        return msgType;
-    }
-
-    public void setMsgType(byte msgType) {
-        this.msgType = msgType;
-    }
-
     public byte[] getData() {
         return data;
     }
@@ -145,5 +135,13 @@ public class TransData {
 
     public void setCrc(int crc) {
         this.crc = crc;
+    }
+
+    public short getMsgType() {
+        return msgType;
+    }
+
+    public void setMsgType(short msgType) {
+        this.msgType = msgType;
     }
 }
