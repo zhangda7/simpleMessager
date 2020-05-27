@@ -1,19 +1,32 @@
 package com.comm.model;
 
+import com.comm.model.msg.HeartBeat;
+import com.comm.model.msg.LoginInfo;
+import com.comm.model.msg.TextData;
+
 public enum MsgType {
 
-    ACK((byte) 0),
+    ACK((short) 1, HeartBeat.class),
 
-    TEXT((byte) 1);
+    LOGIN((short) 2, LoginInfo.class),
 
-    private byte type;
+    TEXT((short) 3, TextData.class);
 
-    MsgType(byte type) {
+    private short type;
+
+    private Class<?> clazz;
+
+    MsgType(short type, Class<?> clazz) {
         this.type = type;
+        this.clazz = clazz;
     }
 
 
-    public Byte getType() {
+    public short getType() {
         return type;
+    }
+
+    public Class<?> getClazz() {
+        return clazz;
     }
 }

@@ -55,26 +55,8 @@ public class SimpleClient {
         }
     }
 
-    private void sendMsg(DataMessage dataMessage) {
+    public void sendMsg(DataMessage dataMessage) {
         this.channel.writeAndFlush(dataMessage);
-    }
-
-    private void mockSendMsg() throws InterruptedException {
-        logger.info("Begin send data");
-        for (int i = 0; i < 10; i++) {
-            DataMessage dataMessage = new DataMessage();
-            dataMessage.setType("TEXT");
-            dataMessage.setData("data" + i);
-            logger.info("Send data {}", i);
-            this.sendMsg(dataMessage);
-            Thread.sleep(1000);
-        }
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        SimpleClient simpleClient = new SimpleClient("localhost", 8081);
-        simpleClient.start();
-        simpleClient.mockSendMsg();
     }
 
 }

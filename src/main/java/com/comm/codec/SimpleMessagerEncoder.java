@@ -3,7 +3,8 @@ package com.comm.codec;
 import com.comm.CodecUtil;
 import com.comm.model.DataMessage;
 import com.comm.model.MsgType;
-import com.comm.model.TransData;
+import com.comm.codec.model.TransData;
+import com.comm.util.MessageConstants;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -31,8 +32,8 @@ public class SimpleMessagerEncoder extends MessageToByteEncoder<Object> {
     }
 
     private byte[] encodeDataMessage(DataMessage dataMessage) throws IOException {
-        byte[] bytes = CodecUtil.encode(dataMessage);
-        Byte type = MsgType.valueOf(dataMessage.getType()).getType();
+        byte[] bytes = CodecUtil.encode(dataMessage.getData());
+        Short type = MsgType.valueOf(dataMessage.getType()).getType();
 
         if(type == null) {
             throw new IllegalArgumentException("Can not support type " + dataMessage.getType());
@@ -40,6 +41,11 @@ public class SimpleMessagerEncoder extends MessageToByteEncoder<Object> {
 
         TransData transData = new TransData();
         transData.setMsgType(type);
+        transData.setSeqId(dataMessage.getSeqId());
+        transData.setVersion(MessageConstants.VERSION);
+        transData.setPreamble(MessageConstants.PREAMBLE);
+        transData.setHeaderLen((short) 15);
+        transData.setMsgLen(transData.getHeaderLen() + bytes.length);
         transData.setData(bytes);
         transData.setSeqId(seqLong.getAndIncrement());
 

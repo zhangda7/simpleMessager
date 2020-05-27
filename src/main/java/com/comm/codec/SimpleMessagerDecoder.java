@@ -3,7 +3,8 @@ package com.comm.codec;
 import com.comm.CodecUtil;
 import com.comm.model.DataMessage;
 import com.comm.model.MsgType;
-import com.comm.model.TransData;
+import com.comm.codec.model.TransData;
+import com.comm.util.MessageConstants;
 import com.google.gson.Gson;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,9 +29,15 @@ public class SimpleMessagerDecoder extends ByteToMessageDecoder {
         }
         byteBuf.markReaderIndex();
         short preamble = byteBuf.readShort();
+        if(preamble != MessageConstants.PREAMBLE) {
+            //wrong position
+            byteBuf.resetReaderIndex();
+            byteBuf.readByte();
+            return;
+        }
 
         int msgLen = byteBuf.readInt();
-        if(byteBuf.readableBytes() < msgLen + CRC_LENGTH) {
+        if(byteBuf.readableBytes() < (msgLen + CRC_LENGTH - 4 - 2)) {
             byteBuf.resetReaderIndex();
             return;
         }
@@ -41,7 +48,7 @@ public class SimpleMessagerDecoder extends ByteToMessageDecoder {
         TransData transData = new TransData();
         transData.decode(bytes);
 
-        Object object = CodecUtil.decodeData(transData.getData());
+        Object object = CodecUtil.decodeData(transData.getMsgType(), transData.getData());
         if(object instanceof DataMessage) {
             ((DataMessage) object).setSeqId(transData.getSeqId());
         }

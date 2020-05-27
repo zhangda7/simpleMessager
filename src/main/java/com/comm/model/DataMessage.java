@@ -41,4 +41,6 @@ public class DataMessage implements Serializable {
     public void setSeqId(Long seqId) {
         this.seqId = seqId;
     }
+
+
 }

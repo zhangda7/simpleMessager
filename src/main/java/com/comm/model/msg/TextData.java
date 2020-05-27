@@ -1,4 +1,4 @@
-package com.comm.model;
+package com.comm.model.msg;
 
 /**
  * Only represents text data

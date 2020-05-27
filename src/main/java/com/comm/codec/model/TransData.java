@@ -1,4 +1,4 @@
-package com.comm.model;
+package com.comm.codec.model;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -48,7 +48,7 @@ public class TransData {
 
     public byte[] encode() {
         ByteBuffer byteBuffer = ByteBuffer.allocate(bitSize());
-        this.headerLen = 2 + 4 + 2 + 1 + 8 + 1;
+        this.headerLen = 2 + 4 + 2 + 1 + 2 + 8 + 1;
         this.msgLen = this.headerLen + data.length;
 
         byteBuffer.putShort(this.preamble);
@@ -78,7 +78,7 @@ public class TransData {
     }
 
     public int bitSize() {
-        return 2 + 4 + 2 + 1 + 8 + 1 + data.length + 4;
+        return 2 + 4 + 2 + 1 + 2 + 8 + 1 + data.length + 4;
     }
 
     public short getPreamble() {
