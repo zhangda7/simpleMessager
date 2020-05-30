@@ -3,6 +3,7 @@ package com.comm.client;
 import com.comm.model.DataMessage;
 import com.comm.model.MsgType;
 import com.comm.model.msg.LoginInfo;
+import com.comm.model.msg.TextData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,10 +28,13 @@ public class ClientSample {
         logger.info("Begin send data");
 
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             DataMessage dataMessage = new DataMessage();
             dataMessage.setType("TEXT");
-            dataMessage.setData("data" + i);
+            dataMessage.setSeqId((long) i);
+            TextData textData = new TextData();
+            textData.setData("data" + i);
+            dataMessage.setData(textData);
             logger.info("Send data {}", i);
             simpleClient.sendMsg(dataMessage);
             Thread.sleep(1000);

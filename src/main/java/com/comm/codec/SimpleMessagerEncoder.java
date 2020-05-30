@@ -4,6 +4,7 @@ import com.comm.CodecUtil;
 import com.comm.model.DataMessage;
 import com.comm.model.MsgType;
 import com.comm.codec.model.TransData;
+import com.comm.util.CommonUtil;
 import com.comm.util.MessageConstants;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,6 +22,7 @@ public class SimpleMessagerEncoder extends MessageToByteEncoder<Object> {
     private AtomicLong seqLong = new AtomicLong();
 
     protected void encode(ChannelHandlerContext channelHandlerContext, Object data, ByteBuf out) throws Exception {
+        logger.debug("Begin encode data {}", CommonUtil.toJson(data));
         if(!( data instanceof DataMessage)) {
             logger.warn("Not support {} to encode", data);
             return;

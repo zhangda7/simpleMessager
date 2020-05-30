@@ -56,6 +56,7 @@ public class CodecUtil {
             logger.warn("Do not recoginse type {}", type);
             return null;
         }
+        logger.debug("Decode data {} {}", type, new String(bytes));
         Object obj = CommonUtil.fromJson(new String(bytes), typeMap.get(type).getClazz());
         return CommonUtil.makeMessage(typeMap.get(type).name(),
                 0L, obj);
