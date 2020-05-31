@@ -5,6 +5,8 @@ package com.comm.model.msg;
  */
 public class TextData {
 
+    private long msgTs;
+
     private String data;
 
     public String getData() {
@@ -13,5 +15,13 @@ public class TextData {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public long getMsgTs() {
+        return msgTs;
+    }
+
+    public void setMsgTs(long msgTs) {
+        this.msgTs = msgTs;
     }
 }

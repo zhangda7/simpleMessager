@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.comm.service.MessageTextDao">
-  <resultMap id="BaseResultMap" type="com.comm.model.MessageText">
+<mapper namespace="com.comm.service.dao.MessageTextDao">
+  <resultMap id="BaseResultMap" type="com.comm.model.DO.MessageText">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
     <result column="msg_time" jdbcType="TIMESTAMP" property="msgTime" />
     <result column="direction" jdbcType="TINYINT" property="direction" />
     <result column="content" jdbcType="VARCHAR" property="content" />
@@ -72,7 +72,7 @@
   <sql id="Base_Column_List">
     id, `uid`, msg_time, direction, content, gmt_create, gmt_modifed, is_delete
   </sql>
-  <select id="selectByExample" parameterType="com.comm.model.MessageTextExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.comm.model.DO.MessageTextExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -104,21 +104,21 @@
     delete from message_text
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.comm.model.MessageTextExample">
+  <delete id="deleteByExample" parameterType="com.comm.model.DO.MessageTextExample">
     delete from message_text
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.comm.model.MessageText" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.comm.model.DO.MessageText" useGeneratedKeys="true">
     insert into message_text (`uid`, msg_time, direction, 
       content, gmt_create, gmt_modifed, 
       is_delete)
-    values (#{uid,jdbcType=INTEGER}, #{msgTime,jdbcType=TIMESTAMP}, #{direction,jdbcType=TINYINT}, 
+    values (#{uid,jdbcType=VARCHAR}, #{msgTime,jdbcType=TIMESTAMP}, #{direction,jdbcType=TINYINT}, 
       #{content,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModifed,jdbcType=TIMESTAMP}, 
       #{isDelete,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.comm.model.MessageText" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.comm.model.DO.MessageText" useGeneratedKeys="true">
     insert into message_text
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="uid != null">
@@ -145,7 +145,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uid != null">
-        #{uid,jdbcType=INTEGER},
+        #{uid,jdbcType=VARCHAR},
       </if>
       <if test="msgTime != null">
         #{msgTime,jdbcType=TIMESTAMP},
@@ -167,7 +167,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.comm.model.MessageTextExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.comm.model.DO.MessageTextExample" resultType="java.lang.Long">
     select count(*) from message_text
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -180,7 +180,7 @@
         id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.uid != null">
-        `uid` = #{record.uid,jdbcType=INTEGER},
+        `uid` = #{record.uid,jdbcType=VARCHAR},
       </if>
       <if test="record.msgTime != null">
         msg_time = #{record.msgTime,jdbcType=TIMESTAMP},
@@ -208,7 +208,7 @@
   <update id="updateByExample" parameterType="map">
     update message_text
     set id = #{record.id,jdbcType=BIGINT},
-      `uid` = #{record.uid,jdbcType=INTEGER},
+      `uid` = #{record.uid,jdbcType=VARCHAR},
       msg_time = #{record.msgTime,jdbcType=TIMESTAMP},
       direction = #{record.direction,jdbcType=TINYINT},
       content = #{record.content,jdbcType=VARCHAR},
@@ -219,11 +219,11 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.comm.model.MessageText">
+  <update id="updateByPrimaryKeySelective" parameterType="com.comm.model.DO.MessageText">
     update message_text
     <set>
       <if test="uid != null">
-        `uid` = #{uid,jdbcType=INTEGER},
+        `uid` = #{uid,jdbcType=VARCHAR},
       </if>
       <if test="msgTime != null">
         msg_time = #{msgTime,jdbcType=TIMESTAMP},
@@ -246,9 +246,9 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.comm.model.MessageText">
+  <update id="updateByPrimaryKey" parameterType="com.comm.model.DO.MessageText">
     update message_text
-    set `uid` = #{uid,jdbcType=INTEGER},
+    set `uid` = #{uid,jdbcType=VARCHAR},
       msg_time = #{msgTime,jdbcType=TIMESTAMP},
       direction = #{direction,jdbcType=TINYINT},
       content = #{content,jdbcType=VARCHAR},

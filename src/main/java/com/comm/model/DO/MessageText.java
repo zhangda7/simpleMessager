@@ -1,4 +1,4 @@
-package com.comm.model;
+package com.comm.model.DO;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,7 +16,7 @@ public class MessageText implements Serializable {
     /**
      * user id
      */
-    private Integer uid;
+    private String uid;
 
     /**
      * 消息所属的时间
@@ -49,11 +49,11 @@ public class MessageText implements Serializable {
         this.id = id;
     }
 
-    public Integer getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(Integer uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 

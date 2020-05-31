@@ -8,15 +8,21 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
+@Service
 public class SimpleServer {
 
     private static Logger logger = LoggerFactory.getLogger(SimpleServer.class);
 
     public void start(String host, int port) throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup(2, new DefaultThreadFactory("Boss"));
+        final EventLoopGroup bossGroup = new NioEventLoopGroup(2, new DefaultThreadFactory("Boss"));
         EventLoopGroup workerGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors(), new DefaultThreadFactory("worker"));
 
         try {
@@ -37,16 +43,25 @@ public class SimpleServer {
             ChannelFuture f = b.bind(host, port);
             f = f.sync();
             logger.info("Server start on {} {}", host, port);
-            f.channel().closeFuture().sync();
+            f.channel().closeFuture().addListener(new GenericFutureListener<Future<? super Void>>() {
+                @Override
+                public void operationComplete(Future<? super Void> future) throws Exception {
+                    logger.info("Server Channel close {}", future);
+                }
+            });
         } finally {
+//            bossGroup.shutdownGracefully();
+//            workerGroup.shutdownGracefully();
+        }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
-        }
+        }));
     }
 
-    public static void main(String[] args) throws Exception {
-        SimpleServer simpleServer = new SimpleServer();
-        simpleServer.start("0.0.0.0", 8081);
+    @PostConstruct
+    public void autoStartServer() throws Exception {
+        this.start("0.0.0.0", 8081);
     }
 
 }

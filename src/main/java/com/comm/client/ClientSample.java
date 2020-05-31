@@ -34,6 +34,7 @@ public class ClientSample {
             dataMessage.setSeqId((long) i);
             TextData textData = new TextData();
             textData.setData("data" + i);
+            textData.setMsgTs(System.currentTimeMillis());
             dataMessage.setData(textData);
             logger.info("Send data {}", i);
             simpleClient.sendMsg(dataMessage);
