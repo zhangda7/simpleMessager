@@ -72,7 +72,7 @@
   <sql id="Base_Column_List">
     id, `uid`, msg_time, direction, content, gmt_create, gmt_modifed, is_delete
   </sql>
-  <select id="selectByExample" parameterType="com.comm.model.DO.MessageTextExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.comm.service.example.MessageTextExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -104,7 +104,7 @@
     delete from message_text
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.comm.model.DO.MessageTextExample">
+  <delete id="deleteByExample" parameterType="com.comm.service.example.MessageTextExample">
     delete from message_text
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -167,7 +167,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.comm.model.DO.MessageTextExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.comm.service.example.MessageTextExample" resultType="java.lang.Long">
     select count(*) from message_text
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />

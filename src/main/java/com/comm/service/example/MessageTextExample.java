@@ -1,4 +1,4 @@
-package com.comm.model.DO;
+package com.comm.service.example;
 
 import java.util.ArrayList;
 import java.util.Date;

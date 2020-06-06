@@ -1,7 +1,7 @@
 package com.comm.service.dao;
 
 import com.comm.model.DO.MessageText;
-import com.comm.model.DO.MessageTextExample;
+import com.comm.service.example.MessageTextExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
