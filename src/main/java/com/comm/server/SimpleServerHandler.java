@@ -1,10 +1,12 @@
 package com.comm.server;
 
+import com.comm.model.DO.EventLog;
 import com.comm.model.DO.MessageText;
 import com.comm.model.DataMessage;
 import com.comm.model.MsgType;
 import com.comm.model.msg.LoginInfo;
 import com.comm.model.msg.TextData;
+import com.comm.service.EventLogService;
 import com.comm.service.MessageService;
 import com.comm.util.ApplicationContextHolder;
 import com.comm.util.CommonUtil;
@@ -19,8 +21,6 @@ import java.util.Date;
 public class SimpleServerHandler extends SimpleChannelInboundHandler<Object> {
 
     private static Logger logger = LoggerFactory.getLogger(SimpleServerHandler.class);
-
-    private MessageService messageService;
 
     private String curUid;
 
@@ -39,9 +39,21 @@ public class SimpleServerHandler extends SimpleChannelInboundHandler<Object> {
             LoginInfo loginInfo = (LoginInfo) dataMessage.getData();
             this.curUid = loginInfo.getUid();
             logger.info("Cache uid {} for {}", this.curUid, ctx.channel());
+            this.insertEvent(loginInfo.getUid(), MsgType.LOGIN.name());
         } else {
             logger.info("Ignore type {}", dataMessage.getType());
         }
+    }
+
+    private void insertEvent(String uid, String type) {
+        EventLog eventLog = new EventLog();
+        eventLog.setOccurTime(new Date());
+        eventLog.setType(type);
+        eventLog.setUid(uid);
+        eventLog.setGmtCreate(new Date());
+        eventLog.setGmtModified(new Date());
+        eventLog.setIsDelete((byte) 0);
+        ApplicationContextHolder.getBean(EventLogService.class).insert(eventLog);
     }
 
     private void insertText(TextData textData) {
